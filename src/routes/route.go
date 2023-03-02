@@ -9,11 +9,11 @@ func ServerRoutes() {
 	router := gin.Default()
 	products := router.Group("/api/products")
 	{
-		products.GET("/api/products", controllers.Index)
-		products.GET("/api/product/:id", controllers.Show)
-		products.POST("/api/product", controllers.Create)
-		products.PUT("/api/product/:id", controllers.Update)
-		products.DELETE("/api/product", controllers.Delete)
+		products.GET("/", controllers.Index)
+		products.GET("/:id", controllers.Show)
+		products.POST("/", controllers.Create)
+		products.PUT("/:id", controllers.Update)
+		products.DELETE("/:id", controllers.Delete)
 	}
 	_ = router.Run()
 }
