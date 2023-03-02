@@ -9,7 +9,7 @@ func ServerRoutes() {
 	router := gin.Default()
 	products := router.Group("/api/products")
 	{
-		products.GET("/", controllers.Index)
+		products.GET("/", controllers.FilterProductsByCategory)
 		products.GET("/:id", controllers.Show)
 		products.POST("/", controllers.Create)
 		products.PUT("/:id", controllers.Update)
