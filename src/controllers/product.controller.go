@@ -8,15 +8,23 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Index(c *gin.Context) {
+func FilterProductsByCategory(c *gin.Context) {
 	var products []models.Product
-	err := models.DB.Find(&products).Error
+	category := c.Query("category")
 
-	if err != nil {
-		log.Fatal(err.Error())
+	if category != "" {
+		err := models.DB.Where("category = ?", category).Find(&products).Error
+		if err != nil {
+			log.Fatal(err.Error())
+		}
 	} else {
-		c.JSON(http.StatusOK, gin.H{"products": products})
+		err := models.DB.Find(&products).Error
+		if err != nil {
+			log.Fatal(err.Error())
+		}
 	}
+
+	c.JSON(http.StatusOK, gin.H{"products": products})
 }
 
 func Show(c *gin.Context) {
