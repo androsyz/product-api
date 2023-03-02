@@ -2,7 +2,9 @@ package controllers
 
 import (
 	"log"
+	"math"
 	"net/http"
+	"strconv"
 
 	"github.com/androsyahreza/product-api/src/models"
 	"github.com/gin-gonic/gin"
@@ -11,20 +13,49 @@ import (
 func FilterProductsByCategory(c *gin.Context) {
 	var products []models.Product
 	category := c.Query("category")
+	page, err := strconv.Atoi(c.Query("page"))
+	if err != nil {
+		page = 1
+	}
+	pageSize, err := strconv.Atoi(c.Query("page_size"))
+	if err != nil {
+		pageSize = 5
+	}
 
 	if category != "" {
-		err := models.DB.Where("category = ?", category).Find(&products).Error
+		err := models.DB.Where("category = ?", category).Limit(pageSize).Offset((page - 1) * pageSize).Find(&products).Error
 		if err != nil {
 			log.Fatal(err.Error())
 		}
 	} else {
-		err := models.DB.Find(&products).Error
+		err := models.DB.Find(&products).Limit(pageSize).Offset((page - 1) * pageSize).Find(&products).Error
 		if err != nil {
 			log.Fatal(err.Error())
 		}
 	}
 
-	c.JSON(http.StatusOK, gin.H{"products": products})
+	var totalProducts int64
+	if category != "" {
+		err = models.DB.Model(&models.Product{}).Where("category = ?", category).Count(&totalProducts).Error
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+	} else {
+		err = models.DB.Find(&products).Count(&totalProducts).Limit(pageSize).Offset((page - 1) * pageSize).Find(&products).Error
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+	}
+
+	totalPages := int(math.Ceil(float64(totalProducts) / float64(pageSize)))
+
+	c.JSON(http.StatusOK, gin.H{
+		"products":       products,
+		"page":           page,
+		"page_size":      pageSize,
+		"total_pages":    totalPages,
+		"total_products": totalProducts,
+	})
 }
 
 func Show(c *gin.Context) {
