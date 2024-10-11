@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/androsyahreza/product-api/src/models"
+	"github.com/androsyz/product-api/src/models"
 	"github.com/gin-gonic/gin"
 )
 

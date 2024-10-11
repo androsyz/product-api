@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/androsyahreza/product-api/src/controllers"
+	"github.com/androsyz/product-api/src/controllers"
 	"github.com/gin-gonic/gin"
 )
 

@@ -1,4 +1,4 @@
-module github.com/androsyahreza/product-api
+module github.com/androsyz/product-api
 
 go 1.20
 

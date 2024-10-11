@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/androsyahreza/product-api/config"
-	"github.com/androsyahreza/product-api/src/routes"
+	"github.com/androsyz/product-api/config"
+	"github.com/androsyz/product-api/src/routes"
 	"github.com/joho/godotenv"
 )
 
